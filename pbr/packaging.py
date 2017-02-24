@@ -41,6 +41,7 @@ from pbr import extra_files
 from pbr import git
 from pbr import options
 import pbr.pbr_json
+from pbr import pytest_command
 from pbr import testr_command
 from pbr import version
 
@@ -196,6 +197,16 @@ class LocalInstall(install.install):
         return du_install.install.run(self)
 
 
+class PyTest(pytest_command.PyTest):
+    """PyTest fallback test runner."""
+
+    command_name = 'test'
+
+    def run(self):
+        # Can't use super - base class old-style class
+        pytest_command.PyTest.run(self)
+
+
 class TestrTest(testr_command.Testr):
     """Make setup.py test do the right thing."""
 
@@ -242,6 +253,10 @@ class LocalDebVersion(setuptools.Command):
 
     def finalize_options(self):
         pass
+
+
+def have_pytest():
+    return pytest_command.have_pytest
 
 
 def have_testr():

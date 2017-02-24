@@ -57,6 +57,8 @@ class CommandsConfig(base.BaseConfig):
         elif self.config.get('nosetests', False) and packaging.have_nose():
             # We seem to still have nose configured
             self.add_command('pbr.packaging.NoseTest')
+        elif self.config.get('pytest', False) and packaging.have_pytest():
+            self.add_command('pbr.packaging.PyTest')
 
         use_egg = options.get_boolean_option(
             self.pbr_config, 'use-egg', 'PBR_USE_EGG')
